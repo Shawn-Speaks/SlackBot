@@ -28,7 +28,7 @@ public class Slack {
     private static final String ENDPOINT_POST_MESSAGE = "chat.postMessage";
     private static final String ENDPOINT_DELETE_MESSAGE = "chat.delete";
 
-    public static final String BOTS_CHANNEL_ID = "C2ABKERFT";
+    public static final String BOTS_CHANNEL_ID = "C2ADPS5MK";
 
     /**
      * Static method to test the Slack API.
@@ -111,4 +111,6 @@ public class Slack {
 
         return new DeleteMessageResponse(HTTPS.get(deleteMessageUrl));
     }
+
+
 }

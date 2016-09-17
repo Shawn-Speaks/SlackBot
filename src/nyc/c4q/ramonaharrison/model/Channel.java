@@ -65,7 +65,7 @@ public class Channel {
 
         if (json.get("members") != null) {
             JSONArray membersArray = (JSONArray) json.get("members");
-            this.members = new ArrayList<String>();
+            this.members = new ArrayList<>();
             for (int i = 0; i < membersArray.size(); i++) {
                 this.members.add((String) membersArray.get(i));
             }

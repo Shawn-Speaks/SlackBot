@@ -26,7 +26,7 @@ public class ListMessagesResponse extends Response {
         if (json.containsKey("messages")) {
             JSONArray array = (JSONArray) json.get("messages");
 
-            this.messages = new ArrayList<Message>();
+            this.messages = new ArrayList<>();
             for (int i = 0; i < array.size(); i++) {
                 this.messages.add(new Message((JSONObject) array.get(i)));
             }

@@ -26,7 +26,7 @@ public class ListChannelsResponse extends Response {
         if (json.containsKey("channels")) {
             JSONArray array = (JSONArray) json.get("channels");
 
-            this.channels = new ArrayList<Channel>();
+            this.channels = new ArrayList<>();
             for (int i = 0; i < array.size(); i++) {
                 channels.add(new Channel((JSONObject) array.get(i)));
             }

@@ -84,6 +84,24 @@ public class Bot {
         }
     }
 
+    String botName = "Bot";
+
+    public void readMessages(String channelId){
+        ListMessagesResponse listMessagesResponse = Slack.listMessages(channelId);
+
+
+        while (listMessagesResponse.isOk()) {
+            List<Message> messages = listMessagesResponse.getMessages();
+
+            for (Message message : messages) { /* Searches ALL messages in channel for string */
+
+                if(message.getText().equalsIgnoreCase(botName /* text you want to search for here*/)) {
+                    sendMessageToBotsChannel("what do you want? " + message.getUser());
+                }
+            }
+        }
+    }
+
     /**
      * Sample method: deletes a message from the #bots channel. Prints a message indicating success or failure.
      *
