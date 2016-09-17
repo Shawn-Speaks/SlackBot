@@ -2,6 +2,7 @@ package nyc.c4q.ramonaharrison;
 
 import nyc.c4q.ramonaharrison.model.Channel;
 import nyc.c4q.ramonaharrison.model.Message;
+import nyc.c4q.ramonaharrison.model.User;
 import nyc.c4q.ramonaharrison.network.*;
 import nyc.c4q.ramonaharrison.network.response.*;
 
@@ -15,6 +16,8 @@ import java.util.List;
 
 public class Bot {
     // TODO: implement your bot logic!
+    public String botName = "messybot";
+
 
     public Bot() {
 
@@ -25,7 +28,7 @@ public class Bot {
      */
     public void testApi() {
         Response apiTest = Slack.testApi();
-        System.out.println("API OK: " +apiTest.isOk() + "\n");
+        System.out.println("API OK: " + apiTest.isOk() + "\n");
     }
 
     /**
@@ -68,6 +71,23 @@ public class Bot {
             System.err.print("Error listing messages: " + listMessagesResponse.getError());
         }
     }
+
+    public void readMessages(String channelId){
+        ListMessagesResponse listMessagesResponse = Slack.listMessages(channelId);
+
+        if (listMessagesResponse.isOk()) {
+            List<Message> messages = listMessagesResponse.getMessages();
+
+            System.out.println("\nMessages: ");
+
+//            for (Message message : messages) { /* Searches ALL messages in channel for string */
+//
+//                if(message.getText().equalsIgnoreCase(botName /* text you want to search for here*/)) {
+//                    sendMessageToBotsChannel("https://www.hallaminternet.com/assets/https.jpg");
+//                }
+        }
+    }
+
 
     /**
      * Sample method: sends a plain text message to the #bots channel. Prints a message indicating success or failure.
