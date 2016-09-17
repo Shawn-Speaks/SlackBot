@@ -30,7 +30,7 @@ import java.util.List;
 
 public class Message {
 
-    private String text;
+    private String text ;
     private String ts;
     private String user;
     List<Attachment> attachments;
