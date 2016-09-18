@@ -125,7 +125,7 @@ public class Slack {
 
             do{
                if(messages.get(0).getText().contains("messybot") && messages.get(0).getText().contains("holiday")){
-                   URL holidayURL = HTTPS.stringToURL(HOLIDAY_BASE_URL + HOLIDAY_ENDPOINT + "?country=us&key=" + HOLIDAY_API_KEY + getMonth() +  getYear() + getDay() + "&upcoming=true");
+                   URL holidayURL = HTTPS.stringToURL(HOLIDAY_BASE_URL + HOLIDAY_ENDPOINT + "?country=us&key=" + HOLIDAY_API_KEY + getYear() + getMonth() + getDay() + "&upcoming=true");
                    System.out.println(holidayURL);
 
                    JSONObject holidayJson = HTTPS.get(holidayURL);
