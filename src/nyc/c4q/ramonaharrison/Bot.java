@@ -95,7 +95,7 @@ public class Bot {
      * @param text message text.
      */
     public void sendMessageToBotsChannel(String text) {
-        SendMessageResponse sendMessageResponse = Slack.sendMessage(text);
+            SendMessageResponse sendMessageResponse = Slack.sendMessage(text);
 
         if (sendMessageResponse.isOk()) {
             System.out.println("Message sent successfully!");

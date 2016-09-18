@@ -10,26 +10,18 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        Bot aBot = new Bot();
-
-            aBot.testApi();
-            aBot.readMessages("C2BLV9LV6");
-            Slack.getHolidaysForToday();
-//            aBot.sendMessageToBotsChannel(Slack.giphySearch());
-//            Slack.guessingGame();
-//        Calendar cal = Calendar.getInstance();
-//        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//
-//        String dayOfMonthStr = String.valueOf(dayOfMonth);
-//        System.out.println(dayOfMonth);
-//
-//
-//        Calendar cal = Calendar.getInstance();
-//        int currentYear = cal.get(Calendar.YEAR);
-//
-//        String year = String.valueOf(currentYear);
-//        System.out.println(year);
-
+       while(true) {
+           Bot aBot = new Bot();
+//           aBot.listChannels();
+//           aBot.testApi();
+//           aBot.readMessages("C2BLV9LV6");
+           Slack.getHolidaysForToday();
+           if (Slack.giphySearch() != null) {
+               aBot.sendMessageToBotsChannel("You have entered the guessing game command! Type 'hint' for another gif related to the next holiday, or 'give up' for the answer. Good luck!");
+               aBot.sendMessageToBotsChannel(Slack.giphySearch());
+           }
+           Slack.guessingGame();
+       }
 
 
 

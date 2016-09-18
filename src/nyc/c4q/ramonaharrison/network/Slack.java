@@ -35,7 +35,7 @@ public class Slack {
     private static final String ENDPOINT_LIST_MESSAGES = "channels.history";
     private static final String ENDPOINT_POST_MESSAGE = "chat.postMessage";
     private static final String ENDPOINT_DELETE_MESSAGE = "chat.delete";
-    public static final String BOTS_CHANNEL_ID = "C2BLV9LV6";
+    public static final String BOTS_CHANNEL_ID = "C2ADPS5MK";
     // static strings for Holiday API.
     public static final String HOLIDAY_BASE_URL = "https://holidayapi.com";
     public static final String HOLIDAY_ENDPOINT = "/v1/holidays";
@@ -50,7 +50,7 @@ public class Slack {
     private static final String GIPHY_BASE_URL = "https://api.giphy.com/";
     private static final String GIPHY_ENDPOINT_TEST = "v1/gifs/";
     private static final String API = "dc6zaTOxFJmzC";
-    private static final String UNFURL_MEDIA = "true";
+//    private static final String UNFURL_MEDIA = "true";
 
 
 
@@ -97,8 +97,10 @@ public class Slack {
 //            String substr = "+", regex = "\\s";
 //            query = query.replaceAll(regex, substr);
         String temp = holidayName;
-        holidayName=holidayName.replaceAll("\\s","");
-
+        if (holidayName!=null) {
+            holidayName = holidayName.replaceAll("\\s", "");
+        }else
+            return null;
 
             URL giphyURL = HTTPS.stringToURL(GIPHY_BASE_URL + GIPHY_ENDPOINT_TEST + "random?" + "api_key=" + API + "&tag=" + holidayName);
 
@@ -124,9 +126,8 @@ public class Slack {
             List<Message> messages = listMessagesResponse.getMessages();
 
             do{
-               if(messages.get(0).getText().contains("messybot") && messages.get(0).getText().contains("holiday")){
+               if(messages.get(0).getText().equalsIgnoreCase("!holiday")){
                    URL holidayURL = HTTPS.stringToURL(HOLIDAY_BASE_URL + HOLIDAY_ENDPOINT + "?country=us&key=" + HOLIDAY_API_KEY + getYear() + getMonth() + getDay() + "&upcoming=true");
-                   System.out.println(holidayURL);
 
                    JSONObject holidayJson = HTTPS.get(holidayURL);
 
@@ -140,30 +141,35 @@ public class Slack {
                        holidayDate = (String) nextHoliday.get("date");
                    }
                 }
+
             }while(false);
         }
-        System.out.println(holidayName);
-        System.out.println(holidayName);
+
     }
 
 
     public static void guessingGame () {
-        boolean isSolved = false;
+        boolean isSolved;
+        if(holidayName==null){
+            isSolved=true;
+        }else
+            isSolved=false;
+
         ListMessagesResponse listMessagesResponse = Slack.listMessages(BOTS_CHANNEL_ID);
         List<Message> messages = listMessagesResponse.getMessages();
-
         if (listMessagesResponse.isOk()) {
             while (!isSolved){
-
-                if (messages.get(0).getText().toString().equals(holidayName)) {
+                if (messages.get(0).getText().toString().equalsIgnoreCase(holidayName)) {
                     isSolved = true;
                     sendMessage("Correct! The next Holiday is " + holidayName + ". " + holidayName + " is on " + holidayDate);
                 } else if (messages.get(0).getText().equalsIgnoreCase("give up")){
                     isSolved = true;
                     sendMessage("The next Holiday is + " + holidayName + " . It lands on " + holidayDate + ".");
                 }else if (messages.get(0).getText().equalsIgnoreCase("hint")) {
-                    giphySearch();
+                    sendMessage(giphySearch());
                 }
+                ListMessagesResponse listMessages1Response = Slack.listMessages(BOTS_CHANNEL_ID);
+                messages = listMessages1Response.getMessages();
             }
         }
     }
