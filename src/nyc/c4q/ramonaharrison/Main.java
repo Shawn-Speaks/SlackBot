@@ -12,10 +12,11 @@ public class Main {
     public static void main(String[] args) {
         Bot aBot = new Bot();
 
-        aBot.testApi();
-        aBot.readMessages("C2BLV9LV6");
+            aBot.testApi();
+            aBot.readMessages("C2BLV9LV6");
             Slack.getHolidaysForToday();
-
+//            aBot.sendMessageToBotsChannel(Slack.giphySearch());
+//            Slack.guessingGame();
 //        Calendar cal = Calendar.getInstance();
 //        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 //

@@ -1,5 +1,6 @@
-import org.json.simple.JSONObject;
+package nyc.c4q.ramonaharrison.model;
 
+import org.json.simple.JSONObject;
 
 /**
  {
@@ -34,6 +35,7 @@ import org.json.simple.JSONObject;
  }
  }
  */
+
 public class GiphyClass {
 
     private String type;
@@ -59,7 +61,7 @@ public class GiphyClass {
     private String fixed_width_small_width;
     private String fixed_width_small_height;
 
-    public GiphyData(JSONObject json) {
+    public GiphyClass(JSONObject json) {
         // parse data from the incoming json
 
         if (json.containsKey("type")){

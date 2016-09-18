@@ -16,6 +16,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import static com.sun.org.apache.xml.internal.serializer.utils.Utils.messages;
+
 /**
  * Created by Ramona Harrison
  * on 8/26/16
@@ -41,9 +43,18 @@ public class Slack {
     //Strings For Holiday ++ Giphy!
 
 
+    public static String holidayName;
+    public static String holidayDate;
 
 
-    public boolean solved;
+    private static final String GIPHY_BASE_URL = "https://api.giphy.com/";
+    private static final String GIPHY_ENDPOINT_TEST = "v1/gifs/";
+    private static final String API = "dc6zaTOxFJmzC";
+    private static final String UNFURL_MEDIA = "true";
+
+
+
+    public boolean isSolved;
 
 
     public static String getMonth(){
@@ -74,8 +85,37 @@ public class Slack {
 
         return new Response(object);
 
-
     }
+
+    public static String giphySearch() {
+
+        ListMessagesResponse listMessagesResponse = Slack.listMessages("C2ADPS5MK");
+        List<Message> messages = listMessagesResponse.getMessages();
+
+//
+//            String query = message.getText();
+//            String substr = "+", regex = "\\s";
+//            query = query.replaceAll(regex, substr);
+        String temp = holidayName;
+        holidayName=holidayName.replaceAll("\\s","");
+
+
+            URL giphyURL = HTTPS.stringToURL(GIPHY_BASE_URL + GIPHY_ENDPOINT_TEST + "random?" + "api_key=" + API + "&tag=" + holidayName);
+
+            JSONObject giphyJson = HTTPS.get(giphyURL);
+            holidayName = temp;
+            if (giphyJson.containsKey("data")) {
+
+                JSONObject myObj = (JSONObject) giphyJson.get("data");
+                String giphyString = myObj.get("fixed_height_downsampled_url").toString();
+                System.out.println(giphyString);
+                return giphyString;
+            }else
+                return " ";
+    }
+
+
+
 //
     public static void getHolidaysForToday(){
         ListMessagesResponse listMessagesResponse = Slack.listMessages(BOTS_CHANNEL_ID);
@@ -83,10 +123,9 @@ public class Slack {
         if(listMessagesResponse.isOk()) {
             List<Message> messages = listMessagesResponse.getMessages();
 
-
             do{
-               if(/*messages.get(0).getText().contains("messybot") && messages.get(0).getText().contains("holiday"*/ true){
-                   URL holidayURL = HTTPS.stringToURL(HOLIDAY_BASE_URL + HOLIDAY_ENDPOINT + "?country=us&key=" + HOLIDAY_API_KEY + getYear() + getMonth() + getDay() + "&upcoming=true");
+               if(messages.get(0).getText().contains("messybot") && messages.get(0).getText().contains("holiday")){
+                   URL holidayURL = HTTPS.stringToURL(HOLIDAY_BASE_URL + HOLIDAY_ENDPOINT + "?country=us&key=" + HOLIDAY_API_KEY + getMonth() +  getYear() + getDay() + "&upcoming=true");
                    System.out.println(holidayURL);
 
                    JSONObject holidayJson = HTTPS.get(holidayURL);
@@ -96,22 +135,37 @@ public class Slack {
 
                        JSONObject nextHoliday = (JSONObject) array.get(0);
 
-                       String holidayName = (String) nextHoliday.get("name");
+                       holidayName = (String) nextHoliday.get("name");
 
-                       String holidayDate = (String) nextHoliday.get("date");
-
-                       sendMessage(holidayDate);
-                       sendMessage(holidayName);
-
+                       holidayDate = (String) nextHoliday.get("date");
                    }
                 }
             }while(false);
         }
+        System.out.println(holidayName);
+        System.out.println(holidayName);
     }
 
 
-    public static void giphyTesting (){
+    public static void guessingGame () {
+        boolean isSolved = false;
+        ListMessagesResponse listMessagesResponse = Slack.listMessages(BOTS_CHANNEL_ID);
+        List<Message> messages = listMessagesResponse.getMessages();
 
+        if (listMessagesResponse.isOk()) {
+            while (!isSolved){
+
+                if (messages.get(0).getText().toString().equals(holidayName)) {
+                    isSolved = true;
+                    sendMessage("Correct! The next Holiday is " + holidayName + ". " + holidayName + " is on " + holidayDate);
+                } else if (messages.get(0).getText().equalsIgnoreCase("give up")){
+                    isSolved = true;
+                    sendMessage("The next Holiday is + " + holidayName + " . It lands on " + holidayDate + ".");
+                }else if (messages.get(0).getText().equalsIgnoreCase("hint")) {
+                    giphySearch();
+                }
+            }
+        }
     }
 
 
