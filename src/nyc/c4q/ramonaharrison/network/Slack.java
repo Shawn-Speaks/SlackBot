@@ -121,8 +121,6 @@ public class Slack {
 
 
 
-
-
     public static void getHolidaysForToday(){
         ListMessagesResponse listMessagesResponse = Slack.listMessages(BOTS_CHANNEL_ID);
 
@@ -175,8 +173,8 @@ public class Slack {
                     sendMessage(giphySearch());
                 }
 
-                ListMessagesResponse listMessages1Response = Slack.listMessages(BOTS_CHANNEL_ID);
-                messages = listMessages1Response.getMessages();
+                ListMessagesResponse listMessagesResponse2 = Slack.listMessages(BOTS_CHANNEL_ID);
+                messages = listMessagesResponse2.getMessages();
 
             }
         }
