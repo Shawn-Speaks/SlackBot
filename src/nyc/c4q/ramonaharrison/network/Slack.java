@@ -92,13 +92,11 @@ public class Slack {
         ListMessagesResponse listMessagesResponse = Slack.listMessages("C2ADPS5MK");
         List<Message> messages = listMessagesResponse.getMessages();
 
-//
-//            String query = message.getText();
-//            String substr = "+", regex = "\\s";
-//            query = query.replaceAll(regex, substr);
         String temp = holidayName;
-        holidayName=holidayName.replaceAll("\\s","");
-
+        if (holidayName!=null) {
+            holidayName = holidayName.replaceAll("\\s", "");
+        }else
+            return null;
 
             URL giphyURL = HTTPS.stringToURL(GIPHY_BASE_URL + GIPHY_ENDPOINT_TEST + "random?" + "api_key=" + API + "&tag=" + holidayName);
 
@@ -116,7 +114,15 @@ public class Slack {
 
 
 
-//
+    // CREATE PRIVATE SLACK CHANNEL.
+    // CALL LISTCHANNEL METHOD
+    // CHANGE BOTS_CHANNEL_ID TO APPROPRIATE CHANNEL
+    // MESS AROUND WITH CODE UNDERNEATH.
+
+
+
+
+
     public static void getHolidaysForToday(){
         ListMessagesResponse listMessagesResponse = Slack.listMessages(BOTS_CHANNEL_ID);
 
@@ -124,7 +130,7 @@ public class Slack {
             List<Message> messages = listMessagesResponse.getMessages();
 
             do{
-               if(messages.get(0).getText().contains("messybot") && messages.get(0).getText().contains("holiday")){
+               if(messages.get(0).getText().equalsIgnoreCase("!holiday")){
                    URL holidayURL = HTTPS.stringToURL(HOLIDAY_BASE_URL + HOLIDAY_ENDPOINT + "?country=us&key=" + HOLIDAY_API_KEY + getYear() + getMonth() + getDay() + "&upcoming=true");
                    System.out.println(holidayURL);
 
@@ -143,27 +149,35 @@ public class Slack {
             }while(false);
         }
         System.out.println(holidayName);
-        System.out.println(holidayName);
     }
 
 
     public static void guessingGame () {
-        boolean isSolved = false;
+        boolean isSolved;
+        if(holidayName==null){
+            isSolved=true;
+        }else
+            isSolved=false;
+
         ListMessagesResponse listMessagesResponse = Slack.listMessages(BOTS_CHANNEL_ID);
         List<Message> messages = listMessagesResponse.getMessages();
 
         if (listMessagesResponse.isOk()) {
             while (!isSolved){
 
-                if (messages.get(0).getText().toString().equals(holidayName)) {
+                if (messages.get(0).getText().equalsIgnoreCase(holidayName)) {
                     isSolved = true;
                     sendMessage("Correct! The next Holiday is " + holidayName + ". " + holidayName + " is on " + holidayDate);
                 } else if (messages.get(0).getText().equalsIgnoreCase("give up")){
                     isSolved = true;
                     sendMessage("The next Holiday is + " + holidayName + " . It lands on " + holidayDate + ".");
                 }else if (messages.get(0).getText().equalsIgnoreCase("hint")) {
-                    giphySearch();
+                    sendMessage(giphySearch());
                 }
+
+                ListMessagesResponse listMessages1Response = Slack.listMessages(BOTS_CHANNEL_ID);
+                messages = listMessages1Response.getMessages();
+
             }
         }
     }
@@ -241,8 +255,5 @@ public class Slack {
 
         return new DeleteMessageResponse(HTTPS.get(deleteMessageUrl));
     }
-
-
-
 
 }
