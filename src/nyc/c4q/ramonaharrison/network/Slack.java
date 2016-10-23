@@ -17,6 +17,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import static com.sun.org.apache.xml.internal.serializer.utils.Utils.messages;
+import static sun.security.krb5.Confounder.intValue;
 
 /**
  * Created by Ramona Harrison
@@ -53,8 +54,32 @@ public class Slack {
     private static final String UNFURL_MEDIA = "true";
 
 
+    public static String getRandomHoliday () {
+        double gameMonth;
+        double gameDay;
+        int numDays;
 
-    public boolean isSolved;
+        gameMonth = (Math.floor(Math.random() * 12)) + 1;
+
+        if (gameMonth <= 7) {
+            numDays = 31;
+        } else if (gameMonth <= 11) {
+            numDays = 30;
+        } else {
+            numDays = 28;
+        }
+
+    gameDay = (Math.floor(Math.random() * numDays)+1);
+    int tempDay = (int) gameDay;
+    int tempMonth = (int) gameMonth;
+
+        String tempDayStr = Integer.toString(tempDay);
+        String tempMonthStr = Integer.toString(tempMonth);
+
+        return "&month="+tempMonthStr+"&day="+tempDayStr+"&upcoming=true";
+    }
+
+
 
 
     public static String getMonth(){
@@ -95,13 +120,18 @@ public class Slack {
         String temp = holidayName;
         if (holidayName!=null) {
             holidayName = holidayName.replaceAll("\\s", "");
+            holidayName = holidayName.replaceAll("'","");
+            System.out.println(holidayName + " " + holidayDate);
         }else
             return null;
 
             URL giphyURL = HTTPS.stringToURL(GIPHY_BASE_URL + GIPHY_ENDPOINT_TEST + "random?" + "api_key=" + API + "&tag=" + holidayName);
 
             JSONObject giphyJson = HTTPS.get(giphyURL);
-            holidayName = temp;
+
+//        String string = giphyJson.get("data");
+        System.out.println(giphyJson);
+        holidayName = temp;
             if (giphyJson.containsKey("data")) {
 
                 JSONObject myObj = (JSONObject) giphyJson.get("data");
@@ -114,22 +144,18 @@ public class Slack {
 
 
 
-    // CREATE PRIVATE SLACK CHANNEL.
-    // CALL LISTCHANNEL METHOD
-    // CHANGE BOTS_CHANNEL_ID TO APPROPRIATE CHANNEL
-    // MESS AROUND WITH CODE UNDERNEATH.
-
-
 
     public static void getHolidaysForToday(){
         ListMessagesResponse listMessagesResponse = Slack.listMessages(BOTS_CHANNEL_ID);
-
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         if(listMessagesResponse.isOk()) {
             List<Message> messages = listMessagesResponse.getMessages();
 
             do{
                if(messages.get(0).getText().equalsIgnoreCase("!holiday")){
-                   URL holidayURL = HTTPS.stringToURL(HOLIDAY_BASE_URL + HOLIDAY_ENDPOINT + "?country=us&key=" + HOLIDAY_API_KEY + getYear() + getMonth() + getDay() + "&upcoming=true");
+//                   URL holidayURL = HTTPS.stringToURL(HOLIDAY_BASE_URL + HOLIDAY_ENDPOINT + "?country=us&key=" + HOLIDAY_API_KEY + getYear() + getMonth() + getDay() + "&upcoming=true");
+                   URL holidayURL = HTTPS.stringToURL(HOLIDAY_BASE_URL + HOLIDAY_ENDPOINT + "?country=us&key=" + HOLIDAY_API_KEY + getYear() + getRandomHoliday());
+
                    System.out.println(holidayURL);
 
                    JSONObject holidayJson = HTTPS.get(holidayURL);
@@ -144,6 +170,7 @@ public class Slack {
                        holidayDate = (String) nextHoliday.get("date");
                    }
                 }
+                messages = listMessagesResponse.getMessages();
             }while(false);
         }
         System.out.println(holidayName);
@@ -175,9 +202,14 @@ public class Slack {
 
                 ListMessagesResponse listMessagesResponse2 = Slack.listMessages(BOTS_CHANNEL_ID);
                 messages = listMessagesResponse2.getMessages();
-
             }
         }
+        /*
+        ListMessagesResponse listMessagesResponse3 = Slack.listMessages(BOTS_CHANNEL_ID);
+        messages = listMessagesResponse3.getMessages();
+        ATTEMPTING TO FIX INFINITE SLACK LOOP
+        */
+
     }
 
 
