@@ -18,7 +18,7 @@ public class Profile {
     private String image192;
     private String image512;
 
-    public Profile (JSONObject json){
+    public Profile(JSONObject json) {
         if (json.containsKey("firstName")) {
             this.firstName = (String) json.get("firstName");
         }

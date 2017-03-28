@@ -9,10 +9,9 @@ import java.util.List;
 /**
  * Created by Ramona Harrison
  * on 8/26/16
- *
+ * <p>
  * A class representing a channel object, which contains information about a team channel.
  * See https://api.slack.com/types/channel
- *
  */
 
 public class Channel {
@@ -21,18 +20,14 @@ public class Channel {
     private String name;
     private String creator;
     private String lastRead;
-
     private Topic topic;
     private Purpose purpose;
-
     private List<String> members;
     private Message latest;
-
     private boolean isArchived;
     private boolean isGeneral;
     private boolean isChannel;
     private boolean isMember;
-
     private long created;
     private long unreadCount;
     private long unreadCountDisplay;

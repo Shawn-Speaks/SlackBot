@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- "meta": {
- "status": 200,
- "msg": "OK"
- }
+ * "meta": {
+ * "status": 200,
+ * "msg": "OK"
+ * }
  */
 
 public class GiphyMeta {
@@ -22,11 +22,11 @@ public class GiphyMeta {
 
     public GiphyMeta(JSONObject json) {
 
-        if(json.containsKey("status")) {
+        if (json.containsKey("status")) {
             this.status = (Integer) json.get("status");
         }
 
-        if(json.containsKey("msg")) {
+        if (json.containsKey("msg")) {
             this.msg = (String) json.get("msg");
         }
     }

@@ -29,13 +29,10 @@ public class UrbanDictionary {
         for (Message message : messages) {
             String query = message.getText();
             String substr = "+", regex = "\\s";
-            query = query.replaceAll(regex,substr);
+            query = query.replaceAll(regex, substr);
             return HTTPS.stringToURL(BASE_URL + ENDPOINT_TEST + "?term=" + query + "&unfurl_links=" + UNFURL_LINK);
         }
         return wordSearch();
     }
 }
 
-//       Scanner input = new Scanner(System.in);
-//       System.out.println("enter a word: ");
-//       query = input.next();

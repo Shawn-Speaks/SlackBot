@@ -9,10 +9,9 @@ import java.util.List;
 /**
  * Created by Ramona Harrison
  * on 8/26/16
- *
+ * <p>
  * A class representing a message attachment.
  * See https://api.slack.com/docs/message-attachments
- *
  */
 
 public class Attachment {
@@ -111,7 +110,7 @@ public class Attachment {
             JSONArray jsonFields = (JSONArray) json.get("fields");
             this.fields = new ArrayList<Field>();
             for (int i = 0; i < jsonFields.size(); i++) {
-                Field field = new Field ((JSONObject) jsonFields.get(i));
+                Field field = new Field((JSONObject) jsonFields.get(i));
                 this.fields.add(field);
             }
         }

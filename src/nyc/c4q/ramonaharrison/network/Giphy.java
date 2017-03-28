@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+
 import nyc.c4q.ramonaharrison.model.GiphyData;
 import nyc.c4q.ramonaharrison.model.GiphyMeta;
 import nyc.c4q.ramonaharrison.model.Message;
@@ -34,7 +35,7 @@ public class Giphy {
             query = query.replaceAll(regex, substr);
 
             URL giphyURL = HTTPS.stringToURL(BASE_URL + ENDPOINT_TEST + "random?" + "api_key=" + API + "&tag=" + query);
-                System.out.println(giphyURL);
+            System.out.println(giphyURL);
 
             JSONObject giphyJson = HTTPS.get(giphyURL);
 
@@ -42,15 +43,11 @@ public class Giphy {
 
                 JSONObject myObj = (JSONObject) giphyJson.get("data");
                 String giphyString = myObj.get("fixed_height_downsampled_url").toString();
-                    System.out.println(giphyString);
+                System.out.println(giphyString);
                 return giphyString;
-            }else
+            } else
                 return null;
         }
         return " ";
     }
 }
-
-//        Scanner input = new Scanner(System.in);
-//            System.out.println("enter a word: ");
-//        String query = input.next();

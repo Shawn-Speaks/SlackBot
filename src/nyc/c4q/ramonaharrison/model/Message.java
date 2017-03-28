@@ -9,23 +9,22 @@ import java.util.List;
 /**
  * Created by Ramona Harrison
  * on 8/26/16
- *
+ * <p>
  * A class representing a message.
  * See https://api.slack.com/docs/message-formatting
- *
+ * <p>
  * Example JSON:
- *
- *  {
- *    "text": "I am a test message http://slack.com",
- *    "ts": "1358546515.000008",
- *    "user": "U2147483896",
- *    "attachments": [
- *       {
- *         "text": "And here's an attachment!"
- *       }
- *    ]
- *  }
- *
+ * <p>
+ * {
+ * "text": "I am a test message http://slack.com",
+ * "ts": "1358546515.000008",
+ * "user": "U2147483896",
+ * "attachments": [
+ * {
+ * "text": "And here's an attachment!"
+ * }
+ * ]
+ * }
  */
 
 public class Message {
